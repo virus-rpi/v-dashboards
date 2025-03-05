@@ -1,0 +1,29 @@
+body{
+    font-family:sans-serif;
+    padding: 28px;
+    background:#121212;
+    color:#fff
+}
+
+.card-container {
+    display: flex;
+    height: 100vh;
+    gap: 16px;
+    flex-direction: column;
+    margin-top: 32px;
+}
+
+.card {
+    background: #222;
+    border-radius: 8px;
+    padding: 20px 20px 32px 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.button {
+    background: #0077cc;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 16px;
+}

@@ -19,7 +19,7 @@ interface CardInterface {
 }
 
 struct Card {
-	title string
+	title          string
 	full_page_link string
 }
 
@@ -40,14 +40,18 @@ fn (card Card) get_full_page_content() string {
 }
 
 fn (card CardInterface) to_html() string {
-	return '
+	mut res := '
 	<div class="card">
-		<h2>$card.get_title()</h2>
-		<p>$card.get_content()</p>
-		<br>
-	 	<a href="$card.get_full_page_link()" class="button">More</a>
+		<h2>${card.get_title()}</h2>
+		<p>${card.get_content()}</p>'
+	if card.get_full_page_link() != '' {
+		res += '<br><a href="${card.get_full_page_link()}" class="button">More</a>'
+	}
+	res += '
 	</div>'
+	return res
 }
+
 pub fn (app &App) index(mut ctx Context) veb.Result {
 	cards := app.cards
 	mut cards_html := ''
@@ -73,7 +77,7 @@ pub fn (app &App) index(mut ctx Context) veb.Result {
 pub fn (app &App) full_page(mut ctx Context, path string) veb.Result {
 	cards := get_cards()
 	for card in cards {
-		if card.get_full_page_link().trim_left("/") == path {
+		if card.get_full_page_link().trim_left('/') == path {
 			return ctx.html('
 				<head>
   		  			<link rel="stylesheet" type="text/css" href="/css/main.css">
@@ -113,13 +117,18 @@ pub fn (mut ctx Context) not_found() veb.Result {
 fn get_cards() []CardInterface {
 	return [
 		VLibDocs.new(),
-			Card{ title: "Card 2" },
-			Card{ title: "Card 3" },
-			Card{ title: "Card 4" },
-			Card{ title: "Card 5" },
+		Go2V.new(),
+		Card{
+			title: 'Card 3'
+		},
+		Card{
+			title: 'Card 4'
+		},
+		Card{
+			title: 'Card 5'
+		},
 	]
 }
-
 
 fn main() {
 	mut app := &App{

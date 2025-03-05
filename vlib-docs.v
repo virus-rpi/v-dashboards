@@ -3,16 +3,17 @@ module main
 import os
 
 struct LibStats {
-	name string
-	pub_methods int
-	undocumented_count int
+	name                 string
+	pub_methods          int
+	undocumented_count   int
 	undocumented_methods []string
 }
+
 struct TotalLibStats {
-	mut:
-		total_methods int
-		total_undoc int
-		stats []LibStats
+mut:
+	total_methods int
+	total_undoc   int
+	stats         []LibStats
 }
 
 const vlib_path = os.join_path_single(@VEXEROOT, 'vlib')
@@ -48,20 +49,24 @@ fn analyze_libs() !TotalLibStats {
 	}
 	for lib in os.ls(vlib_path)! {
 		lib_path := os.join_path(vlib_path, lib)
-		if !os.is_dir(lib_path) { continue }
+		if !os.is_dir(lib_path) {
+			continue
+		}
 		mut total_methods, mut total_undoc := 0, 0
 		mut undoc_methods_all := []string{}
 		for file in os.walk_ext(lib_path, '.v') {
-			if file.ends_with('_test.v') { continue }
+			if file.ends_with('_test.v') {
+				continue
+			}
 			undoc := collect_undocumented_functions_in_file(file)
 			total_methods += count_pub_methods(file)
 			total_undoc += undoc.len
 			undoc_methods_all << undoc
 		}
 		stats.stats << LibStats{
-			name: lib
-			pub_methods: total_methods
-			undocumented_count: total_undoc
+			name:                 lib
+			pub_methods:          total_methods
+			undocumented_count:   total_undoc
 			undocumented_methods: undoc_methods_all
 		}
 		stats.total_methods += total_methods
@@ -80,30 +85,37 @@ fn VLibDocs.new() VLibDocs {
 	}
 }
 
-fn (v_lib_docs VLibDocs) get_title() string {
+fn (_ VLibDocs) get_title() string {
 	return 'VLib Documentation'
 }
 
-fn (v_lib_docs VLibDocs) get_full_page_link() string {
+fn (_ VLibDocs) get_full_page_link() string {
 	return '/vlib-docs'
 }
 
 fn (v_lib_docs VLibDocs) get_content() string {
 	stats := v_lib_docs.stats
 
-	mut total_methods, mut total_undoc := stats.total_methods, stats.total_undoc
-	overall_coverage := if total_methods > 0 { 100.0 - (f64(total_undoc) * 100.0 / f64(total_methods)) } else { 100.0 }
+	total_methods, total_undoc := stats.total_methods, stats.total_undoc
+	overall_coverage := if total_methods > 0 {
+		100.0 - (f64(total_undoc) * 100.0 / f64(total_methods))
+	} else {
+		100.0
+	}
 
 	return '
         <style>
-            .progressbar-outer{width:100%;background-color:#333;height:20px;border-radius:4px;margin:10px 0;} @keyframes fillBar {0% {width:0%;}100% {width:' +
-			'${overall_coverage}%;}} .progressbar-inner{animation:fillBar 0.7s ease-in-out forwards; background-color:#4CAF50;height:100%;border-radius:4px; display: flex; align-items: center; justify-content: center;} @keyframes fadeIn {0% {opacity: 0;}100% {opacity: 1;}} .progressbar-label{animation:fadeIn 0.7s ease-in-out forwards;}
+            .v-lib-docs-progress-outer {width:100%; background-color:#333; height:20px; border-radius:4px; margin:10px 0;}
+            @keyframes fillVLibDocs {0% {width: 0%;} 100% {width: ${overall_coverage}%;}}
+            .v-lib-docs-progress-inner {animation: fillVLibDocs 0.7s ease-in-out forwards; background-color:#4CAF50; height:100%; border-radius:4px; display: flex; align-items: center; justify-content: center;}
+            @keyframes fadeVLibDocs {0% {opacity: 0;} 100% {opacity: 1;}}
+            .v-lib-docs-progress-label {animation: fadeVLibDocs 0.7s ease-in-out forwards;}
         </style>
         <p>Total public methods: <span id="total_methods">0</span></p>
         <p>Total undocumented methods: <span id="total_undoc">0</span></p>
         <p>Overall coverage: </p>
-        <div class="progressbar-outer">
-          <div class="progressbar-inner" style="width: ${overall_coverage}%;"><span class="progressbar-label">${overall_coverage:.2f}%</span></div>
+        <div class="v-lib-docs-progress-outer">
+          <div class="v-lib-docs-progress-inner" style="width: ${overall_coverage}%;"><span class="v-lib-docs-progress-label">${overall_coverage:.2f}%</span></div>
         </div>
         <script>
             function animateValue(id, start, end, duration) {

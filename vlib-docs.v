@@ -115,24 +115,14 @@ fn (v_lib_docs VLibDocs) get_content() string {
         <p>Total undocumented methods: <span id="total_undoc">0</span></p>
         <p>Overall coverage: </p>
         <div class="v-lib-docs-progress-outer">
-          <div class="v-lib-docs-progress-inner" style="width: ${overall_coverage}%;"><span class="v-lib-docs-progress-label">${overall_coverage:.2f}%</span></div>
+          <div class="v-lib-docs-progress-inner" style="width: ${overall_coverage}%;"><span id="v-lib-docs-progress-label" class="v-lib-docs-progress-label">0.00%</span></div>
         </div>
         <script>
-            function animateValue(id, start, end, duration) {
-              let obj = document.getElementById(id);
-              let startTime = performance.now();
-                      function update() {
-                let elapsed = Math.min(performance.now() - startTime, duration);
-                obj.textContent = Math.round(start +
-            (end - start) * (elapsed / duration));
-                if (elapsed < duration) requestAnimationFrame(update);
-              }
-              requestAnimationFrame(update);
-            }
-            window.onload = function(){
-              animateValue("total_methods", 0, ${total_methods}, 700);
+            document.addEventListener("DOMContentLoaded", function() {
+              animatePercentageValue("v-lib-docs-progress-label", 0, ${overall_coverage}, 700);
+  			  animateValue("total_methods", 0, ${total_methods}, 700);
               animateValue("total_undoc", 0, ${total_undoc}, 700);
-            };
+			});
         </script>
         '
 }

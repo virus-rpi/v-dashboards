@@ -2,6 +2,13 @@ module main
 
 import net.http
 import json
+import os
+
+fn get_authenticated_github(url string, token string) ?http.Response {
+	mut req := http.new_request(http.Method.get, url, '')
+	req.add_header(http.CommonHeader.authorization, 'token ' + token)
+	return req.do()!
+}
 
 const repo_api_url = 'https://api.github.com/repos/vlang/go2v/contents/'
 
@@ -28,10 +35,13 @@ fn analyze_tests() !TotalTestStats {
 	mut results := []TestResult{}
 
 	branch := 'master'
+	token := os.getenv('GITHUB_TOKEN')
 
 	// Listing the tests directory from the go2v repository (passed tests)
 	tests_url := '${repo_api_url}tests?ref=${branch}'
-	resp_tests := http.get(tests_url) or { return error('failed to get tests directory') }
+	resp_tests := get_authenticated_github(tests_url, token) or {
+		return error('failed to get tests directory')
+	}
 	if resp_tests.status_code == 200 {
 		contents := json.decode([]GitHubContent, resp_tests.body) or { []GitHubContent{} }
 		for item in contents {
@@ -47,7 +57,9 @@ fn analyze_tests() !TotalTestStats {
 
 	// Listing the untested directory from the go2v repository (failed tests)
 	untested_url := '${repo_api_url}untested?ref=${branch}'
-	resp_untested := http.get(untested_url) or { return error('failed to get untested directory') }
+	resp_untested := get_authenticated_github(untested_url, token) or {
+		return error('failed to get untested directory')
+	}
 	if resp_untested.status_code == 200 {
 		contents := json.decode([]GitHubContent, resp_untested.body) or { []GitHubContent{} }
 		for item in contents {
@@ -103,23 +115,13 @@ fn (go_2_v Go2V) get_content() string {
         </style>
         <p>Total tests: <span id="total_tests">0</span></p>
         <p>Total failed tests: <span id="total_failed">0</span></p>
-        <p>Overall coverage: </p>
+        <p>Overall successful: </p>
         <div class="go2v-progress-outer">
-          <div class="go2v-progress-inner" style="width: ${overall_successful}%;"><span class="go2v-progress-label">${overall_successful:.2f}%</span></div>
+          <div class="go2v-progress-inner" style="width: ${overall_successful}%;"><span id="go2v-progress-label" class="go2v-progress-label">0.00%</span></div>
         </div>
         <script>
-            function animateValue(id, start, end, duration) {
-              let obj = document.getElementById(id);
-              let startTime = performance.now();
-                      function update() {
-                let elapsed = Math.min(performance.now() - startTime, duration);
-                obj.textContent = Math.round(start +
-            (end - start) * (elapsed / duration));
-                if (elapsed < duration) requestAnimationFrame(update);
-              }
-              requestAnimationFrame(update);
-            }
             document.addEventListener("DOMContentLoaded", function() {
+              animatePercentageValue("go2v-progress-label", 0, ${overall_successful}, 700);
   			  animateValue("total_tests", 0, ${total_tests}, 700);
               animateValue("total_failed", 0, ${total_failed}, 700);
 			});

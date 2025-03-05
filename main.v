@@ -1,6 +1,7 @@
 module main
 
 import veb
+import os
 
 pub struct Context {
 	veb.Context
@@ -62,6 +63,7 @@ pub fn (app &App) index(mut ctx Context) veb.Result {
 	return ctx.html('
 		<head>
   		  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  		  <script src="/js/animated_value.js"></script>
   		</head>
   		<body>
   		  <h1>V Progress Dashboard</h1>
@@ -81,6 +83,7 @@ pub fn (app &App) full_page(mut ctx Context, path string) veb.Result {
 			return ctx.html('
 				<head>
   		  			<link rel="stylesheet" type="text/css" href="/css/main.css">
+  		  			<script src="/js/animated_value.js"></script>
   				</head>
   				<body>
   		  			<h1>${card.get_title()}</h1>
@@ -103,6 +106,7 @@ pub fn (mut ctx Context) not_found() veb.Result {
 	return ctx.html('
 		<head>
   		  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  		  <script src="/js/animated_value.js"></script>
   		</head>
   		<body>
   		  <h1>V Progress Dashboard</h1>
@@ -118,19 +122,28 @@ fn get_cards() []CardInterface {
 	return [
 		VLibDocs.new(),
 		Go2V.new(),
-		Card{
-			title: 'Card 3'
-		},
-		Card{
-			title: 'Card 4'
-		},
-		Card{
-			title: 'Card 5'
-		},
+		UIRoadmap.new(),
 	]
 }
 
+fn load_env(file string) ! {
+	content := os.read_file(file)!
+	lines := content.split('\n')
+	for line in lines {
+		if line.trim_space().len == 0 || line.starts_with('#') {
+			continue
+		}
+		parts := line.split('=')
+		if parts.len == 2 {
+			key := parts[0].trim_space()
+			value := parts[1].trim_space()
+			os.setenv(key, value, true)
+		}
+	}
+}
+
 fn main() {
+	load_env('.env')!
 	mut app := &App{
 		cards: get_cards()
 	}

@@ -143,7 +143,10 @@ fn load_env(file string) ! {
 }
 
 fn main() {
-	load_env('.env')!
+	token := os.getenv('GITHUB_TOKEN')
+	if token == '' {
+		load_env('.env')!
+	}
 	mut app := &App{
 		cards: get_cards()
 	}

@@ -1,6 +1,7 @@
 module main
 
 import os
+import time
 
 fn write_html_file(path string, content string) ! {
 	os.write_file(path, content)!
@@ -8,6 +9,15 @@ fn write_html_file(path string, content string) ! {
 }
 
 fn render_page(title string, body string) string {
+	timestamp := time.now()
+	hours := time.offset() / 3600
+	mins := (time.offset() % 3600) / 60
+	exact_time_str := '${timestamp.custom_format('MMMM DD YYYY HH:mm')} UTC${if time.offset() >= 0 {
+		'+'
+	} else {
+		'-'
+	}}${hours:02}:${mins:02}'
+	relative_time_str := timestamp.relative()
 	return '
 	<!DOCTYPE html>
 	<html lang="en">
@@ -21,6 +31,16 @@ fn render_page(title string, body string) string {
 		<h1>V Progress Dashboard</h1>
 		<hr>
 		${body}
+		<hr>
+		<footer>
+			<small class="timestamp-wrapper">
+				Data last updated
+				<span class="timestamp-fade" style="width: max-content;">
+					<span class="timestamp-rel">${relative_time_str}</span>
+					<span class="timestamp-fixed">${exact_time_str}</span>
+				</span>
+			</small>
+		</footer>
 	</body>
 	</html>
 	'

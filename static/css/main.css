@@ -27,3 +27,34 @@ body{
     padding: 8px 16px;
     border-radius: 16px;
 }
+
+.timestamp-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: .3em;
+    margin-top: 20px;
+    color: #888;
+    font-size: 0.9em;
+}
+.timestamp-fade {
+    display: inline-block;
+    position: relative;
+    transition: width 0.3s ease;
+    white-space: nowrap;
+}
+.timestamp-rel,
+.timestamp-fixed {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: opacity 0.3s ease;
+}
+.timestamp-fixed {
+    opacity: 0;
+}
+.timestamp-fade:hover .timestamp-rel {
+    opacity: 0;
+}
+.timestamp-fade:hover .timestamp-fixed {
+    opacity: 1;
+}

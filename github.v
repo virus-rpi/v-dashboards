@@ -43,7 +43,7 @@ fn get_authenticated_github(url string, token string) !http.Response {
 	mut cached := http.Response{}
 	load_cache(cache_file_name, mut cached) or { http.Response{} }
 	if cached != http.Response{} {
-		return dump(cached)
+		return cached
 	}
 
 	mut req := http.new_request(http.Method.get, url, '')

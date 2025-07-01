@@ -1,7 +1,10 @@
 # V Dashboard
 
 ## Description
-A dashboard that displays the development progress of parts of V.
+A dashboard that displays the development progress of parts of V.  
+  
+You can access a weekly updated version of this at [v.owo.computer](https://v.owo.computer/).  
+  
 Currently it displays:
 - The documentation progress of the vlibs (gets data from local v install)
 - The test success rate of the go2v transpiler (scapes data from github)

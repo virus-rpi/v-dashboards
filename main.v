@@ -147,6 +147,7 @@ fn main() {
 	if token == '' {
 		load_env('.env')!
 	}
+	generate_static()
 	mut app := &App{
 		cards: get_cards()
 	}

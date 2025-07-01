@@ -23,6 +23,11 @@ Run the dashboard (dev)
 v -d veb_livereload watch run .
 ```
 
+## Planed dashboard cards
+- [ ] [SDL](https://github.com/vlang/sdl) (3.2.0 branch)
+- [ ] [Raylib for V](https://github.com/vlang/raylib)
+- [ ] [vlibsodium](https://github.com/vlang/libsodium)
+
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/dd30a2f9-f860-4793-adef-0a14914e5e69)
 ![image](https://github.com/user-attachments/assets/b3d3ab4c-3bca-4626-bb12-8d18a681c1ad)

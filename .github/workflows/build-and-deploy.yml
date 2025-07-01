@@ -3,7 +3,7 @@ name: Build and Deploy Static Dashboard
 on:
   push:
     branches:
-      - main
+      - master
   schedule:
     - cron: '0 0 * * 1' # every Monday at 00:00 UTC
   workflow_dispatch:    # also allow manual trigger

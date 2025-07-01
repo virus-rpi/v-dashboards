@@ -23,6 +23,11 @@ Run the dashboard (dev)
 v -d veb_livereload watch run .
 ```
 
+Generate statically rendered pages
+```
+v run . -prod -- --static
+```
+
 ## Planed dashboard cards
 - [ ] [SDL](https://github.com/vlang/sdl) (3.2.0 branch)
 - [ ] [Raylib for V](https://github.com/vlang/raylib)

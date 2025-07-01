@@ -28,7 +28,7 @@ jobs:
 
       - name: Build static site
         run: |
-          ./v/v run main.v
+          ./v/v run . -prod -- --static
           mkdir site
           mv out/* site/
 

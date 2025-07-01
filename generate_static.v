@@ -9,15 +9,7 @@ fn write_html_file(path string, content string) ! {
 }
 
 fn render_page(title string, body string) string {
-	timestamp := time.now()
-	hours := time.offset() / 3600
-	mins := (time.offset() % 3600) / 60
-	exact_time_str := '${timestamp.custom_format('MMMM DD YYYY HH:mm')} UTC${if time.offset() >= 0 {
-		'+'
-	} else {
-		'-'
-	}}${hours:02}:${mins:02}'
-	relative_time_str := timestamp.relative()
+	exact_time_iso := time.utc().unix_milli()
 	return '
 	<!DOCTYPE html>
 	<html lang="en">
@@ -26,6 +18,7 @@ fn render_page(title string, body string) string {
 		<title>${title}</title>
 		<link rel="stylesheet" href="css/main.css">
 		<script src="js/animated_value.js"></script>
+		<script src="js/update_timestamp.js" defer></script>
 	</head>
 	<body>
 		<h1>V Progress Dashboard</h1>
@@ -35,9 +28,9 @@ fn render_page(title string, body string) string {
 		<footer>
 			<small class="timestamp-wrapper">
 				Data last updated
-				<span class="timestamp-fade" style="width: max-content;">
-					<span class="timestamp-rel">${relative_time_str}</span>
-					<span class="timestamp-fixed">${exact_time_str}</span>
+				<span class="timestamp-fade" data-timestamp="${exact_time_iso}">
+					<span class="timestamp-rel">Loading...</span>
+					<span class="timestamp-fixed">Loading...</span>
 				</span>
 			</small>
 		</footer>

@@ -1,16 +1,17 @@
 # V Dashboard
 
 ## Description
-A dashboard that displays the development progress of parts of V.  
-  
-You can access a weekly updated version of this at [v.owo.computer](https://v.owo.computer/).  
-  
+A dashboard that displays the development progress of parts of V.
+
+You can access a weekly updated version of this at [v.owo.computer](https://v.owo.computer/).
+
 Currently it displays:
 - The documentation progress of the vlibs (gets data from local v install)
-- The test success rate of the go2v transpiler (scapes data from github)
-- The progress to v0.1 of the ui library (scapes data from github)
+- The test success rate of the go2v transpiler, based on passed tests (scrapes data from github)
+- The test success rate of the c2v transpiler, based on passed tests (scrapes data from github)
+- The progress to v0.1 of the ui library (scrapes data from github)
 
-If you want another aspect tracked just create an issue that tells me what to track and how i could track that (or just create a PR adding it yourself if you dont wanna wait :p) 
+If you want another aspect tracked just create an issue that tells me what to track and how i could track that (or just create a PR adding it yourself if you dont wanna wait :p)
 
 ## Usage
 Put a github token in a `.env` file

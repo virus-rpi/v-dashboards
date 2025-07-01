@@ -10,7 +10,7 @@ fn get_authenticated_github(url string, token string) ?http.Response {
 	return req.do()!
 }
 
-const repo_api_url = 'https://api.github.com/repos/vlang/go2v/contents/'
+const go2v_repo_api_url = 'https://api.github.com/repos/vlang/go2v/contents/'
 
 struct TestResult {
 	name   string
@@ -30,7 +30,7 @@ struct GitHubContent {
 	content_type string @[json: 'type']
 }
 
-fn analyze_tests() !TotalTestStats {
+fn analyze_go2v_tests() !TotalTestStats {
 	mut stats := TotalTestStats{}
 	mut results := []TestResult{}
 
@@ -38,7 +38,7 @@ fn analyze_tests() !TotalTestStats {
 	token := os.getenv('GITHUB_TOKEN')
 
 	// Listing the tests directory from the go2v repository (passed tests)
-	tests_url := '${repo_api_url}tests?ref=${branch}'
+	tests_url := '${go2v_repo_api_url}tests?ref=${branch}'
 	resp_tests := get_authenticated_github(tests_url, token) or {
 		return error('failed to get tests directory')
 	}
@@ -56,7 +56,7 @@ fn analyze_tests() !TotalTestStats {
 	}
 
 	// Listing the untested directory from the go2v repository (failed tests)
-	untested_url := '${repo_api_url}untested?ref=${branch}'
+	untested_url := '${go2v_repo_api_url}untested?ref=${branch}'
 	resp_untested := get_authenticated_github(untested_url, token) or {
 		return error('failed to get untested directory')
 	}
@@ -83,7 +83,7 @@ struct Go2V {
 
 fn Go2V.new() Go2V {
 	return Go2V{
-		stats: analyze_tests() or { return Go2V{} }
+		stats: analyze_go2v_tests() or { return Go2V{} }
 	}
 }
 

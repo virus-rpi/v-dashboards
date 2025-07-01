@@ -122,6 +122,7 @@ fn get_cards() []CardInterface {
 	return [
 		VLibDocs.new(),
 		Go2V.new(),
+		C2V.new(),
 		UIRoadmap.new(),
 	]
 }

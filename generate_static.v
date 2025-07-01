@@ -53,6 +53,7 @@ fn generate_static() {
 			continue
 		}
 		full_html := render_page(card.get_title(), '
+			<br>
 			<a href="index.html" class="button">Go back to home</a>
 			<br><br><hr>
 			${card.get_full_page_content()}

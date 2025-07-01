@@ -92,7 +92,7 @@ fn (_ Go2V) get_title() string {
 }
 
 fn (_ Go2V) get_full_page_link() string {
-	return '/go2v'
+	return 'go2v'
 }
 
 fn (go_2_v Go2V) get_content() string {

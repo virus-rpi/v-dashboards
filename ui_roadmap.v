@@ -39,7 +39,7 @@ fn UIRoadmap.new() UIRoadmap {
 	progress, completed_tasks, incomplete_tasks, categories := calculate_progress(issue.body)
 	return UIRoadmap{
 		title:            'UI Lib v0.1 Release Progress'
-		full_page_link:   '/ui-release-progress'
+		full_page_link:   'ui-release-progress'
 		progress:         progress
 		completed_tasks:  completed_tasks
 		incomplete_tasks: incomplete_tasks

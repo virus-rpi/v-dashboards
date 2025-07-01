@@ -90,7 +90,7 @@ fn (_ VLibDocs) get_title() string {
 }
 
 fn (_ VLibDocs) get_full_page_link() string {
-	return '/vlib-docs'
+	return 'vlib-docs'
 }
 
 fn (v_lib_docs VLibDocs) get_content() string {

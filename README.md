@@ -10,6 +10,8 @@ Currently it displays:
 - The test success rate of the go2v transpiler (scapes data from github)
 - The progress to v0.1 of the ui library (scapes data from github)
 
+If you want another aspect tracked just create an issue that tells me what to track and how i could track that (or just create a PR adding it yourself if you dont wanna wait :p) 
+
 ## Usage
 Put a github token in a `.env` file
 ```
@@ -32,9 +34,9 @@ v run . -prod -- --static
 ```
 
 ## Planed dashboard cards
-- [ ] [SDL](https://github.com/vlang/sdl) (3.2.0 branch)
-- [ ] [Raylib for V](https://github.com/vlang/raylib)
-- [ ] [vlibsodium](https://github.com/vlang/libsodium)
+- [ ] [SDL](https://github.com/vlang/sdl) (3.2.0 branch) - currently unclear how to track progress
+- [ ] [Raylib for V](https://github.com/vlang/raylib) - currently unclear how to track progress
+- [ ] [vlibsodium](https://github.com/vlang/libsodium) - currently unclear how to track progress
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/dd30a2f9-f860-4793-adef-0a14914e5e69)

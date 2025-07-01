@@ -5,7 +5,9 @@ import json
 import os
 
 struct GitHubIssue {
-	body string
+	body     string
+	title    string @[json: 'title']
+	html_url string @[json: 'html_url']
 }
 
 struct UIRoadmap {

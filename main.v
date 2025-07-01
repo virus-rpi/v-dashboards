@@ -120,6 +120,7 @@ pub fn (mut ctx Context) not_found() veb.Result {
 
 fn get_cards() []CardInterface {
 	return [
+		VIssues.new(),
 		VLibDocs.new(),
 		Go2V.new(),
 		C2V.new(),

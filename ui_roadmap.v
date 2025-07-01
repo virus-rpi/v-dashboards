@@ -4,12 +4,6 @@ import net.http
 import json
 import os
 
-struct GitHubIssue {
-	body     string
-	title    string @[json: 'title']
-	html_url string @[json: 'html_url']
-}
-
 struct UIRoadmap {
 	title            string
 	full_page_link   string

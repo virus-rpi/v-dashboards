@@ -4,11 +4,12 @@ import json
 import os
 import time
 import net.http
+import net.urllib
 
 const vlang_org_api_url = 'https://api.github.com/orgs/vlang/repos'
 
 const cache_file = '.vlang_issues_cache.json'
-const cache_ttl_seconds = 3600 // 1 hour
+const cache_ttl_seconds = 36000 // 10 hours
 
 struct VLangIssuesCache {
 	repo_issues []RepoIssues
@@ -44,18 +45,13 @@ mut:
 	total_closed int
 }
 
-struct GitHubIssueSearchResult {
-	total_count int
-}
-
-struct GitHubIssueSearchResponse {
-	items []GitHubIssue
-}
-
 fn fetch_repo_issues(owner string, repo string, token string) !RepoIssues {
-	base_url := 'https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue'
-	open_url := base_url + '+is:open'
-	closed_url := base_url + '+is:closed'
+	base_query := 'repo:${owner}/${repo} is:issue'
+	open_query := base_query + ' is:open'
+	closed_query := base_query + ' is:closed'
+
+	open_url := 'https://api.github.com/search/issues?q=' + urllib.query_escape(open_query)
+	closed_url := 'https://api.github.com/search/issues?q=' + urllib.query_escape(closed_query)
 
 	open_resp := get_authenticated_github(open_url, token) or {
 		return error('Failed to fetch open issues for ${owner}/${repo}: ${err}')

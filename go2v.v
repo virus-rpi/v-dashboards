@@ -1,14 +1,7 @@
 module main
 
-import net.http
 import json
 import os
-
-fn get_authenticated_github(url string, token string) ?http.Response {
-	mut req := http.new_request(http.Method.get, url, '')
-	req.add_header(http.CommonHeader.authorization, 'token ' + token)
-	return req.do()!
-}
 
 const go2v_repo_api_url = 'https://api.github.com/repos/vlang/go2v/contents/'
 
@@ -22,12 +15,6 @@ mut:
 	total_tests  int
 	total_failed int
 	results      []TestResult
-}
-
-struct GitHubContent {
-	name         string
-	path         string
-	content_type string @[json: 'type']
 }
 
 fn analyze_go2v_tests() !TotalTestStats {
